@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bio Generator - مولد السير الذاتية الذكي</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #764ba2;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .results {
+            display: none;
+            text-align: right;
+        }
+        .bio-option {
+            background: #f9f9f9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        .bio-option h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .char-count {
+            font-size: 12px;
+            color: #888;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Bio Generator</h1>
+        <p>أدخل معلوماتك لإنشاء سيرة ذاتية قصيرة احترافية مخصصة لمنصتك المفضلة. سنولد لك 3 خيارات مختلفة في ثوانٍ!</p>
+        
+        <form id="bioForm">
+            <input type="text" id="name" placeholder="اسمك (مثال: أحمد محمد)" required>
+            <input type="text" id="field" placeholder="تخصصك أو وظيفتك (مثال: مطور برمجيات)" required>
+            <select id="tone" required>
+                <option value="">اختر نبرة الأسلوب</option>
+                <option value="احترافي">احترافي</option>
+                <option value="مرح">مرح</option>
+                <option value="ملهم">ملهم</option>
+                <option value="إبداعي">إبداعي</option>
+            </select>
+            <select id="platform" required>
+                <option value="">اختر المنصة</option>
+                <option value="Twitter">Twitter (≤150 حرف)</option>
+                <option value="Instagram">Instagram (≤150 حرف)</option>
+                <option value="LinkedIn">LinkedIn (≤300 حرف)</option>
+                <option value="TikTok">TikTok (≤150 حرف)</option>
+                <option value="Personal Website">موقع شخصي (≤400 حرف)</option>
+            </select>
+            <button type="submit">ولّد السيرة الذاتية الآن!</button>
+        </form>
+        
+        <div id="results" class="results">
+            <h2>إليك 3 خيارات مخصصة:</h2>
+            <div id="bio1" class="bio-option"></div>
+            <div id="bio2" class="bio-option"></div>
+            <div id="bio3" class="bio-option"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bioForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const field = document.getElementById('field').value;
+            const tone = document.getElementById('tone').value;
+            const platform = document.getElementById('platform').value;
+            
+            if (!name || !field || !tone || !platform) {
+                alert('يرجى ملء جميع الحقول!');
+                return;
+            }
+            
+            // قوالب بسيطة لتوليد Bio (محاكاة AI). يمكن استبدالها بـ API حقيقي.
+            const templates = {
+                احترافي: {
+                    short: `${name} | ${field} متميز بأكثر من 5 سنوات خبرة. أسعى للابتكار والكفاءة. #${field}`,
+                    medium: `${name} | خبير في ${field}. أبني حلولاً رقمية مستدامة مع التركيز على الشراكات. دعونا نربط الأفكار بالنتائج! #${field} #ابتكار`,
+                    long: `في مجال ${field}، ${name} هو الشريك المثالي للمشاريع الرقمية. مع خبرة واسعة، أركز على الجودة والابتكار. اتصل بي لنصنع الفرق معًا.`
+                },
+                مرح: {
+                    short: `هلا! أنا ${name}، ${field} يحب القهوة والتحديات 😎. تابعوني للإبداعات الممتعة! #${field}Fun`,
+                    medium: `مرحباً بالعالم! ${name} هنا، ${field} بأسلوب مرح. أحول الأفكار إلى واقع ممتع، وأنا جاهز للمغامرات. ما رأيكم؟ 😉 #${field}`,
+                    long: `يا جماعة، أنا ${name}، الـ ${field} اللي بيضيف لمسة مرح لكل مشروع. من القهوة الصباحية للأفكار الجنونية، أنا هنا لأشارككم الرحلة. انضموا للفريق!`
+                },
+                ملهم: {
+                    short: `${name} | ${field} يلهم التغيير. كل فكرة تبدأ بخطوة! #${field}Inspired`,
+                    medium: `في عالم ${field}، ${name} هو الشرارة. مستوحى من النجاحات، أبني جسورًا للمستقبل. انضموا للرحلة! ✨`,
+                    long: `${name}، ${field} شغوف بالإلهام. أؤمن أن كل تحدي فرصة للنمو. دعونا نصنع قصص نجاح حقيقية معًا – المستقبل يبدأ الآن.`
+                },
+                إبداعي: {
+                    short: `${name} | ${field} إبداعي يرسم المستقبل. 🎨 #${field}Creative`,
+                    medium: `أنا ${name}، ${field} يمزج الخيال بالواقع. أفكاري تتدفق مثل النهر – تابعوني للإلهام اليومي!`,
+                    long: `مع ${name}، ${field} يصبح فنًا. أستخدم الإبداع لأحول الأحلام إلى واقع، مستوحى من العالم حولي. دعونا نكتشف إمكانيات لا حدود لها معًا.`
+                }
+            };
+            
+            const template = templates[tone];
+            const maxLength = platform.includes('Twitter') || platform.includes('Instagram') || platform.includes('TikTok') ? 150 : 
+                              platform.includes('LinkedIn') ? 300 : 400;
+            
+            // توليد 3 خيارات بأطوال مختلفة
+            const bio1 = template.short.slice(0, maxLength) + ` (${template.short.length} حرف)`;
+            const bio2 = template.medium.slice(0, maxLength) + ` (${template.medium.length} حرف)`;
+            const bio3 = template.long.slice(0, maxLength) + ` (${template.long.length} حرف)`;
+            
+            document.getElementById('bio1').innerHTML = `<h3>خيار 1: ${tone} قصير</h3><p>${bio1}</p><div class="char-count">مناسب لـ ${platform}</div>`;
+            document.getElementById('bio2').innerHTML = `<h3>خيار 2: ${tone} متوسط</h3><p>${bio2}</p><div class="char-count">مناسب لـ ${platform}</div>`;
+            document.getElementById('bio3').innerHTML = `<h3>خيار 3: ${tone} مفصل</h3><p>${bio3}</p><div class="char-count">مناسب لـ ${platform}</div>`;
+            
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // لإضافة AI حقيقي (مثل OpenAI API):
+        // 1. سجل في openai.com واحصل على API Key.
+        // 2. أضف في JS: async function generateBio(prompt) { 
+        //    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        //      method: 'POST',
+        //      headers: { 'Authorization': 'Bearer YOUR_API_KEY', 'Content-Type': 'application/json' },
+        //      body: JSON.stringify({ model: 'gpt-3.5-turbo', messages: [{role: 'user', content: prompt}] })
+        //    });
+        //    return response.json().then(data => data.choices[0].message.content);
+        //  }
+        // 3. استخدمها بدل القوالب: const bio = await generateBio(`Generate a ${tone} bio for ${name} in ${field} for ${platform}`);
+    </script>
+</body>
+</html>
